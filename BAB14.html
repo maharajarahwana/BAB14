@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BAB14</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BAB1</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Latihan Kosakata</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .card {
+    background: white;
+    padding: 30px;
+    width: 400px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  input {
+    width: 90%;
+    padding: 8px;
+    margin-top: 15px;
+  }
+  button {
+    margin-top: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  .result {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .wrong { color: red; }
+  .correct { color: green; }
+  ol { text-align:left; max-height:400px; overflow:auto; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2 id="question"></h2>
+  <input type="text" id="answerInput" placeholder="Tulis jawaban di sini">
+  <br>
+  <button id="nextBtn">Selanjutnya</button>
+</div>
+
+<script>
+let questions = [
+{ soal: "위치", jawaban: "lokasi" },
+{ soal: "오른쪽", jawaban: "arah kanan" },
+{ soal: "길찾기", jawaban: "mencari jalan" },
+{ soal: "건너편", jawaban: "di seberang jalan" },
+{ soal: "맞은편", jawaban: "di seberang jalan" },
+{ soal: "사거리", jawaban: "perempatan" },
+{ soal: "이쪽", jawaban: "arah ini" },
+{ soal: "올라오다", jawaban: "datang naik" },
+{ soal: "저쪽", jawaban: "arah itu" },
+{ soal: "들어가다", jawaban: "pergi masuk" },
+{ soal: "그쪽", jawaban: "arah tersebut" },
+{ soal: "방향", jawaban: "arah" },
+{ soal: "어느쪽", jawaban: "arah mana" },
+{ soal: "나가다", jawaban: "pergi keluar" },
+{ soal: "층", jawaban: "lantai" },
+{ soal: "나오다", jawaban: "datang keluar" },
+{ soal: "지하", jawaban: "bawah tanah" },
+{ soal: "의자위", jawaban: "di atas kursi" },
+{ soal: "근처", jawaban: "sekitar" },
+{ soal: "아래", jawaban: "bawah" },
+{ soal: "밑", jawaban: "bawah" },
+{ soal: "도로명", jawaban: "nama jalan" },
+{ soal: "건너다", jawaban: "menyeberang" },
+{ soal: "횡단하다", jawaban: "menyeberang" },
+{ soal: "주소", jawaban: "alamat" },
+{ soal: "앞", jawaban: "depan" },
+{ soal: "표기하다", jawaban: "menandai" },
+{ soal: "횡단보도", jawaban: "zebra cross" },
+{ soal: "점차", jawaban: "perlahan" },
+{ soal: "뒤", jawaban: "belakang" },
+{ soal: "시 / 도", jawaban: "kota / provinsi" },
+{ soal: "육교", jawaban: "jembatan penyeberangan" },
+{ soal: "해당", jawaban: "terkait / sesuai" },
+{ soal: "안", jawaban: "dalam" },
+{ soal: "대로", jawaban: "jalan raya" },
+{ soal: "옥상", jawaban: "atap" },
+{ soal: "좁은길", jawaban: "jalan sempit" },
+{ soal: "밖", jawaban: "luar" },
+{ soal: "표시하다", jawaban: "menunjukan / menandakan" },
+{ soal: "옆", jawaban: "samping" },
+{ soal: "내려가다", jawaban: "pergi turun" },
+{ soal: "사이", jawaban: "antara" },
+{ soal: "내려오다", jawaban: "datang turun" },
+{ soal: "왼쪽", jawaban: "arah kiri" },
+{ soal: "올라가다", jawaban: "pergi naik" },
+{ soal: "건물", jawaban: "gedung" },
+];
+
+// Acak soal
+questions = questions.sort(() => Math.random() - 0.5);
+
+let index = 0;
+let score = 0;
+let userAnswers = [];
+
+const questionEl = document.getElementById("question");
+const answerInput = document.getElementById("answerInput");
+const nextBtn = document.getElementById("nextBtn");
+const card = document.querySelector(".card");
+
+function showQuestion() {
+  questionEl.textContent = "Soal " + (index + 1) + ": " + questions[index].soal;
+  answerInput.value = "";
+  answerInput.focus();
+}
+
+nextBtn.addEventListener("click", () => {
+  const userAnswer = answerInput.value.trim().toLowerCase();
+  userAnswers[index] = userAnswer; // simpan jawaban sesuai index
+
+  if (userAnswer === questions[index].jawaban) {
+    score++;
+  }
+
+  index++;
+  if (index < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+});
+
+function showResult() {
+  let answerList = "";
+  questions.forEach((q, i) => {
+    if (userAnswers[i] === q.jawaban) {
+      answerList += `<li>${q.soal} = <span class="correct">${q.jawaban}</span></li>`;
+    } else {
+      answerList += `<li>${q.soal} = <span class="correct">${q.jawaban}</span><br>
+                     Jawaban kamu: <span class="wrong">${userAnswers[i] || "(kosong)"}</span></li>`;
+    }
+  });
+
+  card.innerHTML = `
+    <h2>Hasil</h2>
+    <p class="result">Nilai: ${score} / ${questions.length}</p>
+    <hr>
+    <p>Kunci Jawaban:</p>
+    <ol>${answerList}</ol>
+  `;
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
